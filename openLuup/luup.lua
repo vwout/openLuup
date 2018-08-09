@@ -1,6 +1,6 @@
 local ABOUT = {
   NAME          = "openLuup.luup",
-  VERSION       = "2018.08.05",
+  VERSION       = "2018.08.09",
   DESCRIPTION   = "emulation of luup.xxx(...) calls",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2013-2018 AKBooer",
@@ -62,6 +62,7 @@ local ABOUT = {
 -- 2018.07.07  coerce vaule to string in variable_set truncate()  (thanks @rigpapa
 -- 2018.07.18  change luup.openLuup from true to {}, with possible methods
 -- 2018.08.05  AutoUntrip functionality (thanks @rigpapa)
+-- 2018.08.09  use user_data.json as configure in userdata to save userdata to before reload
 
 
 local logs          = require "openLuup.logs"
@@ -921,7 +922,8 @@ local function reload (exit_status)
   end
   
   _log ("saving user_data", "luup.reload") 
-  local ok, msg = userdata.save (luup)
+  local name = (attr_get "openLuup.UserData.Name") or "user_data.json"
+  local ok, msg = userdata.save (luup, name)
   assert (ok, msg or "error writing user_data")
   
   local shutdown = attr_get "ShutdownCode"

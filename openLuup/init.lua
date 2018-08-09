@@ -1,6 +1,6 @@
 local ABOUT = {
   NAME          = "openLuup.init",
-  VERSION       = "2018.06.14",
+  VERSION       = "2018.08.09",
   DESCRIPTION   = "initialize Luup engine with user_data, run startup code, start scheduler",
   AUTHOR        = "@akbooer",
   COPYRIGHT     = "(c) 2013-2018 AKBooer",
@@ -51,6 +51,7 @@ local ABOUT = {
 -- 2018.05.25  add Data Historian configuration
 -- 2018.05.29  remove HTTP.WgetAuthorization option
 -- 2018.06.14  rename openLuup.Databases to openLuup.DataStorageProvider
+-- 2018.08.09  update path to user supplied user_data.json in userdata
 
 
 local logs  = require "openLuup.logs"
@@ -231,6 +232,9 @@ do -- STARTUP
       local json_code = code: match "^%s*{"               -- what sort of code is this?
       if json_code then 
         ok = userdata.load (code)
+        if ok then
+            luup.attr_set("openLuup.UserData.Name", init)
+        end
         code = userdata.attributes ["StartupCode"] or ''  -- substitute the Startup Lua
       end
       compile_and_run (code, "_openLuup_STARTUP_")        -- the given file or the code in user_data
