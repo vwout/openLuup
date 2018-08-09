@@ -18,7 +18,7 @@ local lfs   = require "lfs"
 p "getting latest openLuup version tar file from GitHub..."
 
 local _, code = https.request{
-  url = "https://codeload.github.com/akbooer/openLuup/tar.gz/development",
+  url = "https://codeload.github.com/vwout/openLuup/tar.gz/development",
   sink = ltn12.sink.file(io.open("latest.tar.gz", "wb"))
 }
 
